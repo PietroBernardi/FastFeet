@@ -8,29 +8,21 @@ class RecipientController {
       street: Yup.string(),
       complement: Yup.string(),
       state: Yup.string(),
+      number: Yup.number(),
       city: Yup.string(),
       zip_code: Yup.string()
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation Recipient fails' });
+      return res.status(400).json({ error: 'Recipient Validation fails' });
     }
 
-    const recipientExists = await Recipient.findOne({
-      where: { name: req.body.name }
-    });
-
-    if (recipientExists) {
-      return res.status(400).json({ error: 'Recipient already exists' });
-    }
-
-    const { id, name, street, provider } = await Recipient.create(req.body);
+    const { id, name, street } = await Recipient.create(req.body);
 
     return res.json({
       id,
       name,
-      street,
-      provider
+      street
     });
   }
 
@@ -40,12 +32,13 @@ class RecipientController {
       street: Yup.string(),
       complement: Yup.string(),
       state: Yup.string(),
+      number: Yup.number(),
       city: Yup.string(),
       zip_code: Yup.string()
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation Recipient fails' });
+      return res.status(400).json({ error: 'Recipient Validation fails' });
     }
     const { name } = req.body;
 
@@ -61,12 +54,11 @@ class RecipientController {
       }
     }
 
-    const { id, provider } = await recipient.update(req.body);
+    const { id } = await recipient.update(req.body);
 
     return res.json({
       id,
-      name,
-      provider
+      name
     });
   }
 
