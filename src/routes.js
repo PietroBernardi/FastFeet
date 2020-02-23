@@ -9,6 +9,7 @@ import DeliverymanController from './app/controllers/DeliverymanController';
 import DeliverymanSessionController from './app/controllers/DeliverymanSessionController';
 import OrderController from './app/controllers/OrderController';
 import FileController from './app/controllers/FileController';
+import DeliveryProblemController from './app/controllers/DeliveryProblemController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -41,8 +42,13 @@ routes.put(
 routes.get('/deliveryman/:deliverymanId', DeliverymanSessionController.index);
 routes.get(
   '/deliveryman/:deliverymanId/deliveries',
-  DeliverymanSessionController.index
+  DeliverymanSessionController.deliveries
 );
+
+/**
+ * Delivery Problem routes
+ */
+routes.post('/delivery/:orderId/problems', DeliveryProblemController.store);
 
 routes.use(authMiddleware);
 
@@ -77,6 +83,13 @@ routes.post('/files', upload.single('file'), FileController.store);
 routes.post('/orders', OrderController.store);
 routes.get('/orders', OrderController.index);
 routes.delete('/orders/:id', OrderController.delete);
-// routes.put('/deliverymans/:id', DeliverymanController.update);
+routes.put('/orders/:id', OrderController.update);
+
+/**
+ * Auth: Delivery Problem routes
+ */
+routes.get('/delivery/problems', DeliveryProblemController.index);
+routes.get('/delivery/:orderId/problems', DeliveryProblemController.show);
+routes.delete('/problem/:id/cancel-delivery', DeliveryProblemController.delete);
 
 export default routes;

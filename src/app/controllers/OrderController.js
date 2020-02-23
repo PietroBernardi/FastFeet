@@ -180,11 +180,11 @@ class OrderController {
       return res.status(400).json({ Error: 'Order does not exist.' });
     }
 
-    // if (order.deliveryman_id != deliverymanId) {
-    //   return res
-    //     .status(400)
-    //     .json({ Error: 'The order does not belong to this deliveryman' });
-    // }
+    if (order.deliveryman_id !== parseInt(deliverymanId, 0)) {
+      return res
+        .status(400)
+        .json({ Error: 'The order does not belong to this deliveryman' });
+    }
 
     if (order.canceled_at) {
       return res.status(400).json({ Error: 'Order has been cancelled' });
@@ -216,9 +216,9 @@ class OrderController {
     });
 
     if (countAttempts >= 5) {
-      return res
-        .status(400)
-        .json({ Error: 'You have reached your 5 attempts.' });
+      return res.status(400).json({
+        Error: 'Deliveryman: You have reached the withdrawal limit for today.'
+      });
     }
 
     const deliveryStart = await order.update({ start_date: new Date() });
