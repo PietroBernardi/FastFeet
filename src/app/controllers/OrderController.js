@@ -64,7 +64,14 @@ class OrderController {
   }
 
   async index(req, res) {
+    const { productName = '' } = req.query;
+
     const orders = await Order.findAll({
+      where: {
+        product: {
+          [Op.iLike]: `%${productName}%`
+        }
+      },
       include: [
         {
           model: Deliveryman,
