@@ -64,7 +64,8 @@ class OrderController {
   }
 
   async index(req, res) {
-    const { productName = '' } = req.query;
+    const { page, productName = '' } = req.query;
+    const atualPage = page || '1';
 
     const orders = await Order.findAll({
       where: {
@@ -111,7 +112,8 @@ class OrderController {
         'canceled_at',
         'start_date',
         'end_date'
-      ]
+      ],
+      offset: (atualPage - 1) * 4
     });
     return res.json(orders);
   }

@@ -34,7 +34,8 @@ class DeliveryMansController {
   }
 
   async index(req, res) {
-    const { deliverymanName = '' } = req.query;
+    const { page, deliverymanName = '' } = req.query;
+    const atualPage = page || '1';
 
     const deliveryman = await Deliveryman.findAll({
       where: {
@@ -44,6 +45,7 @@ class DeliveryMansController {
       },
       order: ['id'],
       attributes: ['id', 'name', 'email'],
+      offset: atualPage,
       include: [
         {
           model: File,

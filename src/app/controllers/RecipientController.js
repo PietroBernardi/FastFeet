@@ -64,14 +64,16 @@ class RecipientController {
   }
 
   async index(req, res) {
-    const { recipientName = '' } = req.query;
+    const { page, recipientName = '' } = req.query;
+    const atualPage = page || '1';
 
     const recipient = await Recipient.findAll({
       where: {
         name: {
           [Op.iLike]: `%${recipientName}%`
         }
-      }
+      },
+      offset: (atualPage - 1) * 4
     });
     return res.json(recipient);
   }

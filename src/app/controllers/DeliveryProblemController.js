@@ -29,8 +29,12 @@ class DeliveryProblemController {
   }
 
   async index(req, res) {
+    const { page = '' } = req.query;
+    const atualPage = page || '1';
+
     const deliveryProblem = await DeliveryProblem.findAll({
       attributes: ['id', 'delivery_id', 'description'],
+      offset: (atualPage - 1) * 4,
       include: {
         model: Order,
         as: 'order_problem',
